@@ -19,6 +19,51 @@ angular.module('starter', ['ionic'])
     }
     if(window.StatusBar) {
       StatusBar.styleDefault();
-    }
+    }    
   });
 })
+.config(function($stateProvider, $urlRouterProvider, USER_ROLES) {
+  $stateProvider
+
+  .state('login', {
+    url: '/login',
+    templateUrl: 'templates/login.html',
+    controller: 'loginCtrl'
+  })
+  .state('main',{
+    url: '/',
+    abstract: true,
+    templateUrl: 'templates/main.html'
+
+  })
+  .state('main.dash',{
+    url: 'main/dash',
+    views: {
+      'dash-tab':{
+        templateUrl: 'templates/dashboard.html',
+        controller: 'DashCtrl'
+      }
+    }
+  })
+  .state('main.public',{
+    url: 'main/public',
+    views: {
+      'public-tab':{
+        templateUrl: 'templates/public.html',
+      }
+    }
+  })
+  .state('main.admin',{
+    url: 'main/admin',
+    views: {
+      'admin-tab':{
+        templateUrl: 'templates/admin.html',
+      }
+    },
+    data: {
+      authorisedRoles: [USER_ROLES.admin] //Could have some more roles
+    }
+  });
+  $urlRouterProvider.otherwise('/main/dash')
+
+});
